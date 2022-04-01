@@ -1,0 +1,12 @@
+{
+  "addons": [
+    {
+      "addon_name": "smart_array_along_curve",
+      "blender_version":"3.1"
+    }
+    ],
+  "blender_exe_loc": "D:\\Programy\\BlenderInstalls\\stable\\blender-3.1.0+stable.c77597cd0e15",
+  "addons_dir_path": "C:\\Users\\admin\\Desktop\\Python\\BlenderAddons"
+
+}
+
