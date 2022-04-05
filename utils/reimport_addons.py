@@ -4,32 +4,15 @@ Uses JSON file to specify addons and versions
 """
 
 from asyncio import subprocess
-import json
 import os
-import sys
 import psutil
 import shutil
 import subprocess
 import pathlib
 
 
-# Opening and reading a JSON file
-def get_addons_data(filename: str) -> dict:
-    """
-    Tries to open a json file, checking if it exists and contains correct data
-    """
-    try:
-        with open(os.path.join(pathlib.Path(__file__).parent.resolve(),filename)) as json_file:
-            addons_data = json.load(json_file)
-    except FileNotFoundError as error:
-        print(error)
-        sys.exit()
-    except json.decoder.JSONDecodeError:
-        print('There is an incorrect value in json file, aborting... ')
-        sys.exit()
-    else:
-        # Returns python dict
-        return addons_data
+
+
 
 
 def kill_blender(process_name: str):
@@ -86,53 +69,26 @@ def clean_old_addon_version(addon_name: str, blender_version: str):
     try:
         add_path = (os.path.join(appdata_path, "Blender Foundation", "Blender", blender_version, "scripts", "addons", addon_name))
         shutil.rmtree(add_path)
+        print(f"{addon_name} removed successfully")
     except BaseException as error:
         print(f"Error while removing old addon version {error}")
 
-def copy_and_unzip_new_addons (addon_name: str, blender_version: str):
+
+def copy_and_unzip_new_addons (addon_name: str, blender_version: str, addons_dir_path: dict):
     # Gets application data path from system env
     appdata_path = os.getenv('APPDATA')
     add_path = os.path.join(appdata_path, "Blender Foundation", "Blender", blender_version, "scripts", "addons")
-    zips_path = pathlib.Path(__file__).parents[1].resolve()
+    zips_path = os.path.abspath(addons_dir_path)
 
     try:
         shutil.copy(os.path.join(zips_path,addon_name+'.zip'), add_path)
+        print(f"{addon_name} zip copied successfully")
         try:
             shutil.unpack_archive(os.path.join(add_path,addon_name+".zip"),os.path.join(add_path,addon_name))
+            print(f"{addon_name} zip unpacked successfully")
         except BaseException as error2:
             print(f"Error while unpacking zip{addon_name}:{error2}")
 
     except BaseException as error:
         print(f"Error while copying new zipped addon version {error}")
 
-
-
-
-def main():
-    # Gets data from JSON file
-    addons_data = get_addons_data("addons.json")
-
-    # Killing Blender
-    blender_process = "blender.exe"
-    kill_blender(blender_process)
-
-    # Zips new versions of addons
-    zip_new_addons(addons_data)
-
-    # Cleans up every addon folder from Appdata and copies new zips
-    for addon in addons_data["addons"]:
-        clean_old_addon_version(addon["addon_name"], addon["blender_version"])
-        copy_and_unzip_new_addons(addon["addon_name"], addon["blender_version"])
-  
-
-    # Restarts blender from path taken from JSON
-    
-    start_blender(addons_data)
-
-
-    # Instaling addons within blender
-
-
-if __name__ == '__main__':
-    main()
-    sys.exit()
