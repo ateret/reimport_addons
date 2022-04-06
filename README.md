@@ -1,2 +1,2 @@
 # reimport_addons
- A simple script to simplfiy reimporting WIP addons into blender 
+ A simple script to simplfiy reimporting WIP blender addons into blender 
