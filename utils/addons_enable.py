@@ -55,3 +55,12 @@ except NameError as n_err:
     pass
 except BaseException as err:
     print(f"Error occured while saving blender user preferences:\n{err}")
+
+# Quits Blender
+try:
+    bpy.quit()
+    bpy.ops.wm.quit_blender()
+except NameError as n_err:
+    pass
+except BaseException as err:
+    print(f"Error occured while quiting blender:\n{err}")

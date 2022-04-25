@@ -28,13 +28,15 @@ def run_blender_side_script(addons_data: dict):
     args =[
         blender_path,
         "-P",
+        "-b",
         os.path.join(pathlib.Path(__file__).parents[0].resolve(),"addons_enable.py")
     ]
 
     # Running blender as subprocess, with blender-side script
     try:
-        print("Starting Blender...")
+        print("Starting Blender and running blender-side script")
         subprocess.run(args)
+        print("Successfully reimported addons!")
     except OSError as error:
         print(f"Error occured while starting blender:\n{error}")
 
