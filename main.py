@@ -30,7 +30,7 @@ def main():
 
     # Killing Blender process
     blender_process = "blender.exe"
-    kill_processes(blender_process)
+    kill_process(blender_process)
 
     # Zips new versions of addons
     zip_new_addons(addons_data)

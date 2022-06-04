@@ -7,7 +7,7 @@ import subprocess
 import pathlib
 import psutil
 
-def kill_processes(process_name: str):
+def kill_process(process_name: str):
     """
     Kills all processes with given name
     """
